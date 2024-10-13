@@ -2,6 +2,7 @@ using BuberBreakfast.Contracts.Breakfast;
 using BuberBreakfast.Models;
 using BuberBreakfast.Services.Breakfasts;
 using ErrorOr;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BuberBreakfast.Controllers;
@@ -37,6 +38,7 @@ public class BreakfastsController : ApiController
                     value: MapBreakfastResponse(breakfast));
     }
 
+    [Authorize]
     [HttpGet("{id:guid}")]
     public IActionResult GetBreakfast(Guid id)
     {

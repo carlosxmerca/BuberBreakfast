@@ -1,19 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <ItemGroup>
-    <ProjectReference Include="..\BuberBreakfast.Contracts\BuberBreakfast.Contracts.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="ErrorOr" Version="2.0.1" />
-  </ItemGroup>
-
+  <!-- Project properties -->
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <!-- Project references -->
+  <ItemGroup>
+    <ProjectReference Include="..\BuberBreakfast.Contracts\BuberBreakfast.Contracts.csproj" />
+  </ItemGroup>
+
+   <!-- NuGet package references -->
+  <ItemGroup>
+    <PackageReference Include="ErrorOr" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3"/>
+ </ItemGroup>
+
+  <!-- Optional packages (commented out) -->
   <!-- <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup> -->

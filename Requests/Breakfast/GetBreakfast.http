@@ -1,3 +1,6 @@
-@id=ce62ab0d-009e-4f82-9e90-b96eae5582d9
+@id=8d9a9a19-abdf-4d0c-865c-010abed81d94
+@token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjYXJsb3htZXJjYSIsImVtYWlsIjoiY2FybG94bWVyY2EiLCJuYmYiOjE3Mjg4NjI5MTAsImV4cCI6MTcyODg2MzUxMCwiaWF0IjoxNzI4ODYyOTEwLCJpc3MiOiJJc3N1ZXIiLCJhdWQiOiJBdWRpZW5jZSJ9.zzaePoS5aCiRxFoBqYQU0UmjjCtgoQ4Cr2wSEBVVZXpG2UwF-85bZg7eb_JGg9BVOG_FJvOrvQkfRCCh2llP6g
+
 
 GET http://localhost:5156/breakfasts/{{id}}
+Authorization: Bearer {{token}}
