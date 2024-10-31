@@ -8,6 +8,13 @@ namespace BuberBreakfast.Controllers;
 [Route("[controller]")]
 public class ApiController : ControllerBase
 {
+    protected readonly ILogger<ApiController> _logger;
+
+    public ApiController(ILogger<ApiController> logger)
+    {
+        _logger = logger;
+    }
+
     protected IActionResult Problem(List<Error> errors)
     {
         if (errors.All(e => e.Type == ErrorType.Validation))
@@ -38,5 +45,26 @@ public class ApiController : ControllerBase
         };
 
         return Problem(statusCode: statusCode, title: firstError.Description);
+    }
+
+    protected Guid GetUserId()
+    {
+        var userIdString = User.FindFirst("userId")?.Value;
+
+        if (userIdString == null)
+        {
+            _logger.LogWarning("Could not find userId in the JWT token.");
+            throw new UnauthorizedAccessException("User could not be identified.");
+        }
+
+        _logger.LogInformation("userId obtained from JWT token: {UserId}", userIdString);
+
+        if (!Guid.TryParse(userIdString, out Guid userId))
+        {
+            _logger.LogWarning("The userId is not a valid GUID.");
+            throw new UnauthorizedAccessException("User could not be identified.");
+        }
+
+        return userId;
     }
 }

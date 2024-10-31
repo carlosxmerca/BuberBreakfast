@@ -14,7 +14,7 @@ public class AuthController : ApiController
     private readonly IConfiguration configuration;
     private readonly IUserService _userService;
 
-    public AuthController(IConfiguration configuration, IUserService userService)
+    public AuthController(IConfiguration configuration, IUserService userService, ILogger<ApiController> logger) : base(logger)
     {
         this.configuration = configuration;
         _userService = userService;
@@ -62,7 +62,7 @@ public class AuthController : ApiController
             new Claim(JwtRegisteredClaimNames.Email, user.UserName),
         });
 
-        var expires = DateTime.UtcNow.AddMinutes(10);
+        var expires = DateTime.UtcNow.AddMinutes(15);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {

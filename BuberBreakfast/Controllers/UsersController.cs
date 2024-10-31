@@ -11,7 +11,7 @@ public class UsersController : ApiController
 {
     private readonly IUserService _userService;
 
-    public UsersController(IUserService userService)
+    public UsersController(IUserService userService, ILogger<ApiController> logger) : base(logger)
     {
         _userService = userService;
     }
