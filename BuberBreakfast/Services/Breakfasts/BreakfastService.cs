@@ -7,8 +7,6 @@ namespace BuberBreakfast.Services.Breakfasts;
 
 public class BreakfastService : IBreakfastService
 {
-    // private static readonly Dictionary<Guid, Breakfast> _breakfasts = new();
-
     private readonly IBreakfastRepository _breakfastRepository;
 
     public BreakfastService(IBreakfastRepository breakfastRepository)
@@ -22,12 +20,6 @@ public class BreakfastService : IBreakfastService
         return Result.Created;
     }
 
-    // public ErrorOr<Created> CreateBreakfast(Breakfast breakfast)
-    // {
-    //     _breakfasts.Add(breakfast.Id, breakfast);
-    //     return Result.Created;
-    // }
-
     public async Task<ErrorOr<Breakfast>> GetBreakfastAsync(Guid id)
     {
         var breakfast = await _breakfastRepository.GetByIdAsync(id);
@@ -39,15 +31,6 @@ public class BreakfastService : IBreakfastService
 
         return breakfast;
     }
-
-    // public ErrorOr<Breakfast> GetBreakfast(Guid id)
-    // {
-    //     if (_breakfasts.TryGetValue(id, out var breakfast))
-    //     {
-    //         return breakfast;
-    //     }
-    //     return Errors.Breakfast.NotFound;
-    // }
 
     public async Task<ErrorOr<UpsertedBreakfast>> UpsertBreakfastAsync(Breakfast breakfast)
     {
@@ -67,17 +50,4 @@ public class BreakfastService : IBreakfastService
         await _breakfastRepository.DeleteAsync(id);
         return Result.Deleted;
     }
-
-    // public ErrorOr<UpsertedBreakfast> UpsertBreakfast(Breakfast breakfast)
-    // {
-    //     var IsNewlyCreated = !_breakfasts.ContainsKey(breakfast.Id);
-    //     _breakfasts[breakfast.Id] = breakfast;
-    //     return new UpsertedBreakfast(IsNewlyCreated);
-    // }
-
-    // public ErrorOr<Deleted> DeleteBreakfast(Guid id)
-    // {
-    //     _breakfasts.Remove(id);
-    //     return Result.Deleted;
-    // }
 }
