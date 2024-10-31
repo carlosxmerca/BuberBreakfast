@@ -10,8 +10,9 @@ using BuberBreakfast.Services.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 {
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql("Host=localhost;Database=buberbreakfast;Username=postgres;Password=secret"));
+    options.UseNpgsql(connectionString));
 
     builder.Services.AddScoped<IBreakfastRepository, BreakfastRepository>();
     builder.Services.AddScoped<IUserRepository, UserRepository>();
