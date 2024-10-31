@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using BuberBreakfast.Contracts.User;
 using BuberBreakfast.ServiceErrors;
 using ErrorOr;
@@ -9,10 +11,13 @@ public class User
     public const int MinUserNameLength = 3;
     public const int MaxUserNameLength = 50;
 
+    [Key]
     public Guid Id { get; private set; }
     public string UserName { get; private set; }
     public string Password { get; private set; }
-
+    
+    [InverseProperty("User")]
+    public List<Breakfast> Breakfasts { get; private set; } = new List<Breakfast>();
 
     private User(
         Guid id,

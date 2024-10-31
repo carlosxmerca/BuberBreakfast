@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using BuberBreakfast.Contracts.Breakfast;
 using BuberBreakfast.ServiceErrors;
 using ErrorOr;
@@ -12,6 +14,7 @@ public class Breakfast
     public const int MinDescriptionLength = 50;
     public const int MaxDescriptionLength = 150;
 
+    [Key]
     public Guid Id { get; private set; }
     public string Name { get; private set; }
     public string Description { get; private set; }
@@ -21,6 +24,12 @@ public class Breakfast
     public List<string> Savory { get; private set; }
     public List<string> Sweet { get; private set; }
 
+    [ForeignKey("User")]
+    public Guid UserId { get; private set; }
+
+    [InverseProperty("Breakfasts")]
+    public User User { get; private set; } = null!;
+
     private Breakfast(
         Guid id,
         string name,
@@ -29,7 +38,8 @@ public class Breakfast
         DateTime endDateTime,
         DateTime lastModifiedDateTime,
         List<string> savory,
-        List<string> sweet)
+        List<string> sweet,
+        Guid userId)
     {
         Id = id;
         Name = name;
@@ -39,6 +49,7 @@ public class Breakfast
         LastModifiedDateTime = lastModifiedDateTime;
         Savory = savory;
         Sweet = sweet;
+        UserId = userId;
     }
 
     public static ErrorOr<Breakfast> Create(
@@ -48,6 +59,7 @@ public class Breakfast
        DateTime endDateTime,
        List<string> savory,
        List<string> sweet,
+       Guid userId,
        Guid? id = null)
     {
         List<Error> errors = new();
@@ -75,21 +87,11 @@ public class Breakfast
             endDateTime,
             DateTime.UtcNow,
             savory,
-            sweet);
+            sweet,
+            userId);
     }
 
-    public static ErrorOr<Breakfast> From(CreateBreakfastRequest request)
-    {
-        return Create(
-            request.Name,
-            request.Description,
-            request.StartDateTime,
-            request.EndDateTime,
-            request.Savory,
-            request.Sweet);
-    }
-
-    public static ErrorOr<Breakfast> From(Guid id, UpsertBreakfastRequest request)
+    public static ErrorOr<Breakfast> From(CreateBreakfastRequest request, Guid userId)
     {
         return Create(
             request.Name,
@@ -98,6 +100,19 @@ public class Breakfast
             request.EndDateTime,
             request.Savory,
             request.Sweet,
+            userId);
+    }
+
+    public static ErrorOr<Breakfast> From(Guid id, UpsertBreakfastRequest request, Guid userId)
+    {
+        return Create(
+            request.Name,
+            request.Description,
+            request.StartDateTime,
+            request.EndDateTime,
+            request.Savory,
+            request.Sweet,
+            userId,
             id);
     }
 }

@@ -51,15 +51,16 @@ public class AuthController : ApiController
         var audience = configuration["Jwt:Audience"];
         var key = Encoding.UTF8.GetBytes(jwtKey);
         var signingCredentials = new SigningCredentials(
-                                new SymmetricSecurityKey(key),
-                                SecurityAlgorithms.HmacSha512Signature
-                            );
+            new SymmetricSecurityKey(key),
+            SecurityAlgorithms.HmacSha512Signature
+        );
 
         var subject = new ClaimsIdentity(new[]
         {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Email, user.UserName),
-                });
+            new Claim(JwtRegisteredClaimNames.Sub, existingUser.Id.ToString()),
+            new Claim("userId", existingUser.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, user.UserName),
+        });
 
         var expires = DateTime.UtcNow.AddMinutes(10);
 

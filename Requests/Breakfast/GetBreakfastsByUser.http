@@ -1,21 +1,4 @@
 @token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4N2MyN2MxMi0xZmYzLTRhZTMtYTIwZS00YzdhZDM5MmE2MDgiLCJ1c2VySWQiOiI4N2MyN2MxMi0xZmYzLTRhZTMtYTIwZS00YzdhZDM5MmE2MDgiLCJlbWFpbCI6ImNhcmxvc3htZXJjYSIsIm5iZiI6MTczMDQwNzEzOSwiZXhwIjoxNzMwNDA3NzM5LCJpYXQiOjE3MzA0MDcxMzksImlzcyI6Iklzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.j9xVyBtpDwLC6S5elI_vTCioKwWEHbSvW-LyiBb3sxYgok0COV4WeKX_QIIC7QQ4C8zjbab4TGV4XjYYk6ysKw
 
-POST http://localhost:5156/breakfasts
+GET http://localhost:5156/breakfasts/user
 Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-    "name": "Sushi",
-    "description": "Delicious sushi, Delicious sushi, Delicious sushi, Delicious sushi",
-    "startDateTime": "2022-04-08T08:00:00Z",
-    "endDateTime": "2022-04-08T11:00:00Z",
-    "savory": [
-        "Oatmeal",
-        "Avocado Toast",
-        "Omelette",
-        "Salad"
-    ],
-    "Sweet": [
-        "Cookie"
-    ]
-}

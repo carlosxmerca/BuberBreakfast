@@ -50,4 +50,10 @@ public class BreakfastService : IBreakfastService
         await _breakfastRepository.DeleteAsync(id);
         return Result.Deleted;
     }
+
+    public async Task<ErrorOr<List<Breakfast>>> GetBreakfastsByUsersync(Guid userId)
+    {
+        var breakfasts = await _breakfastRepository.GetByUserIdAsync(userId);
+        return breakfasts;
+    }
 }

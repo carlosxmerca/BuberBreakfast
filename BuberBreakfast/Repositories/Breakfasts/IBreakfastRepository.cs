@@ -9,4 +9,5 @@ public interface IBreakfastRepository
     Task UpsertAsync(Breakfast breakfast);
     Task DeleteAsync(Guid id);
     Task<bool> ExistsAsync(Guid id);
+    Task<List<Breakfast>> GetByUserIdAsync(Guid userId);
 }

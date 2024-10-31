@@ -55,4 +55,11 @@ public class BreakfastRepository : IBreakfastRepository
     {
         return await _context.Breakfast.AnyAsync(b => b.Id == id);
     }
+
+    public async Task<List<Breakfast>> GetByUserIdAsync(Guid userId)
+    {
+        return await _context.Breakfast
+            .Where(b => b.UserId == userId)
+            .ToListAsync();
+    }
 }
