@@ -4,8 +4,8 @@ Content-Type: application/json
 {
     "name": "Sushi",
     "description": "Delicious sushi, Delicious sushi, Delicious sushi, Delicious sushi",
-    "startDateTime": "2022-04-08T08:00:00",
-    "endDateTime": "2022-04-08T11:00:00",
+    "startDateTime": "2022-04-08T08:00:00Z",
+    "endDateTime": "2022-04-08T11:00:00Z",
     "savory": [
         "Oatmeal",
         "Avocado Toast",
