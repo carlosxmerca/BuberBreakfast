@@ -5,59 +5,76 @@ using BuberBreakfast.Contracts.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using BuberBreakfast.Services.Users;
 
 namespace BuberBreakfast.Controllers;
 
 public class AuthController : ApiController
 {
     private readonly IConfiguration configuration;
-    public AuthController(IConfiguration configuration)
+    private readonly IUserService _userService;
+
+    public AuthController(IConfiguration configuration, IUserService userService)
     {
         this.configuration = configuration;
+        _userService = userService;
     }
 
     [AllowAnonymous]
     [HttpPost]
-    public IActionResult Auth([FromBody] LoginRequest user)
+    public async Task<IActionResult> Auth([FromBody] LoginRequest user)
     {
-        IActionResult response = Unauthorized();
-
-        if (user != null)
+        if (user == null || string.IsNullOrWhiteSpace(user.UserName) || string.IsNullOrWhiteSpace(user.Password))
         {
-            if (user.UserName.Equals("carlosxmerca") && user.Password.Equals("aloha"))
-            {
-                var issuer = configuration["Jwt:Issuer"];
-                var audience = configuration["Jwt:Audience"];
-                var key = Encoding.UTF8.GetBytes(configuration["Jwt:Key"]);
-                var signingCredentials = new SigningCredentials(
-                                        new SymmetricSecurityKey(key),
-                                        SecurityAlgorithms.HmacSha512Signature
-                                    );
+            return BadRequest("Invalid username or password.");
+        }
 
-                var subject = new ClaimsIdentity(new[]
-                {
+        var userResult = await _userService.GetUserAsync(user.UserName);
+        if (userResult.IsError)
+        {
+            return Unauthorized();
+        }
+
+        var existingUser = userResult.Value;
+        if (!_userService.VerifyPassword(user.Password, existingUser.Password))
+        {
+            return Unauthorized();
+        }
+
+        var jwtKey = configuration["Jwt:Key"];
+        if (string.IsNullOrEmpty(jwtKey))
+        {
+            throw new ArgumentNullException("Jwt:Key", "El valor de Jwt:Key no puede ser nulo o vacío.");
+        }
+
+        var issuer = configuration["Jwt:Issuer"];
+        var audience = configuration["Jwt:Audience"];
+        var key = Encoding.UTF8.GetBytes(jwtKey);
+        var signingCredentials = new SigningCredentials(
+                                new SymmetricSecurityKey(key),
+                                SecurityAlgorithms.HmacSha512Signature
+                            );
+
+        var subject = new ClaimsIdentity(new[]
+        {
                     new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Email, user.UserName),
                 });
 
-                var expires = DateTime.UtcNow.AddMinutes(10);
+        var expires = DateTime.UtcNow.AddMinutes(10);
 
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = subject,
-                    Expires = expires,
-                    Issuer = issuer,
-                    Audience = audience,
-                    SigningCredentials = signingCredentials
-                };
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-                var jwtToken = tokenHandler.WriteToken(token);
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = subject,
+            Expires = expires,
+            Issuer = issuer,
+            Audience = audience,
+            SigningCredentials = signingCredentials
+        };
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        var jwtToken = tokenHandler.WriteToken(token);
 
-                return Ok(jwtToken);
-            }
-        }
-
-        return response;
+        return Ok(jwtToken);
     }
 }

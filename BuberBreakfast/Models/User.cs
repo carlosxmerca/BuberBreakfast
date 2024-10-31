@@ -58,4 +58,9 @@ public class User
     {
         UserName = request.UserName;
     }
+    
+    public void SetPassword(string password)
+    {
+        Password = password;
+    }
 }
