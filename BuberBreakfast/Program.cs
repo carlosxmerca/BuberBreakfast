@@ -2,9 +2,22 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using BuberBreakfast.Services.Breakfasts;
+using BuberBreakfast.Data;
+using Microsoft.EntityFrameworkCore;
+using BuberBreakfast.Repositories.Breakfasts;
+using BuberBreakfast.Repositories.Users;
+using BuberBreakfast.Services.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 {
+    builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql("Host=localhost;Database=buberbreakfast;Username=postgres;Password=secret"));
+
+    builder.Services.AddScoped<IBreakfastRepository, BreakfastRepository>();
+    builder.Services.AddScoped<IUserRepository, UserRepository>();
+    builder.Services.AddScoped<IBreakfastService, BreakfastService>();
+    builder.Services.AddScoped<IUserService, UserService>();
+
     builder.Services.AddControllers();
     builder.Services.AddAuthentication(options =>
     {

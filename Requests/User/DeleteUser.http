@@ -1,0 +1,3 @@
+@id=97561831-9c94-41fe-9c5d-df22aa7aeb0b
+
+DELETE http://localhost:5156/users/{{id}}

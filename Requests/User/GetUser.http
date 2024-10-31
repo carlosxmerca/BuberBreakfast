@@ -1,0 +1,6 @@
+@id=238ad90b-bc0c-4c53-9e89-84d1767106e2
+@token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjYXJsb3N4bWVyY2EiLCJlbWFpbCI6ImNhcmxvc3htZXJjYSIsIm5iZiI6MTczMDM5NTkzMCwiZXhwIjoxNzMwMzk2NTMwLCJpYXQiOjE3MzAzOTU5MzAsImlzcyI6Iklzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.aZeyHm2I4u1wWjgbHGJjMJNY3AOhZkDk56964Bce3y-5iVqE5zhqktosVo9EfghvhrS3gTW2JVOX8fOMsglx6w
+
+
+GET http://localhost:5156/users/{{id}}
+Authorization: Bearer {{token}}

@@ -1,0 +1,8 @@
+@id=238ad90b-bc0c-4c53-9e89-84d1767106e2
+
+PUT http://localhost:5156/users/{{id}}
+Content-Type: application/json
+
+{
+    "userName": "carlosxmerca2"
+}

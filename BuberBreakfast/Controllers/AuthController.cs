@@ -1,7 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using BuberBreakfast.Models;
+using BuberBreakfast.Contracts.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -18,7 +18,7 @@ public class AuthController : ApiController
 
     [AllowAnonymous]
     [HttpPost]
-    public IActionResult Auth([FromBody] User user)
+    public IActionResult Auth([FromBody] LoginRequest user)
     {
         IActionResult response = Unauthorized();
 

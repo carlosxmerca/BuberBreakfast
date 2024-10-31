@@ -40,9 +40,9 @@ public class BreakfastsController : ApiController
 
     [Authorize]
     [HttpGet("{id:guid}")]
-    public IActionResult GetBreakfast(Guid id)
+    public async Task<IActionResult> GetBreakfast(Guid id)
     {
-        ErrorOr<Breakfast> getBreakfastResult = _breakfastService.GetBreakfast(id);
+        ErrorOr<Breakfast> getBreakfastResult = await _breakfastService.GetBreakfastAsync(id);
 
         return getBreakfastResult.Match(
             breakfast => Ok(MapBreakfastResponse(breakfast)),
@@ -50,7 +50,7 @@ public class BreakfastsController : ApiController
     }
 
     [HttpPost()]
-    public IActionResult CreateBreakfast(CreateBreakfastRequest request)
+    public async Task<IActionResult> CreateBreakfast(CreateBreakfastRequest request)
     {
         ErrorOr<Breakfast> createBreakfast = Breakfast.From(request);
 
@@ -59,7 +59,7 @@ public class BreakfastsController : ApiController
             return Problem(createBreakfast.Errors);
         }
         var breakfast = createBreakfast.Value;
-        ErrorOr<Created> createBreakfastResult = _breakfastService.CreateBreakfast(breakfast);
+        ErrorOr<Created> createBreakfastResult = await _breakfastService.CreateBreakfastAsync(breakfast);
 
         return createBreakfastResult.Match(
            created => CreatedAtGetBreakfast(breakfast),
@@ -67,7 +67,7 @@ public class BreakfastsController : ApiController
     }
 
     [HttpPut("{id:guid}")]
-    public IActionResult UpsertBreakfast(Guid id, UpsertBreakfastRequest request)
+    public async Task<IActionResult> UpsertBreakfast(Guid id, UpsertBreakfastRequest request)
     {
         ErrorOr<Breakfast> createBreakfast = Breakfast.From(id, request);
 
@@ -76,7 +76,7 @@ public class BreakfastsController : ApiController
             return Problem(createBreakfast.Errors);
         }
         var breakfast = createBreakfast.Value;
-        ErrorOr<UpsertedBreakfast> upsertedBreakfastResult = _breakfastService.UpsertBreakfast(breakfast);
+        ErrorOr<UpsertedBreakfast> upsertedBreakfastResult = await _breakfastService.UpsertBreakfastAsync(breakfast);
 
         return upsertedBreakfastResult.Match(
             upserted => upserted.IsNewlyCreated ? CreatedAtGetBreakfast(breakfast) : NoContent(),
@@ -84,9 +84,9 @@ public class BreakfastsController : ApiController
     }
 
     [HttpDelete("{id:guid}")]
-    public IActionResult DeleteBreakfast(Guid id)
+    public async Task<IActionResult> DeleteBreakfast(Guid id)
     {
-        ErrorOr<Deleted> deleteBreakfastResult = _breakfastService.DeleteBreakfast(id);
+        ErrorOr<Deleted> deleteBreakfastResult = await _breakfastService.DeleteBreakfastAsync(id);
 
         return deleteBreakfastResult.Match(
             deleted => NoContent(),
